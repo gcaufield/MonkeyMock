@@ -1,6 +1,14 @@
 language: java
-
 jdk: openjdk11
-
 script:
-    - ./travis.sh
+- "./travis.sh"
+deploy:
+  provider: releases
+  api_key:
+    secure: J717rdryXj2/9Jp/jsTwh1YByFQZBvg9Od3tL931PDbg2EKG+HgMX3/4GMVjcm15cMEFhgaErXK1NwWaBLSWw2IYAw3kb8g3ApDRsTic17UYEBSAEB8/r6/ZgTs9K9gSiosZW8yz979kdp/3KEgoCGESmo6r2eDJQTdnCBgdTy3PR+bl21ugxQR22V6LENRgNOSMwZikkpGm26UpdyVPmV0/HH0DpWCXjgWjpRqM29prBn64St5f10SuU7uDUV9gWABC3o2LGmP642w3bXybiYfiXsKBRnE8QiNHqTzKc4V1ELK49ZRRCDnhCmG4DNyKNEW5niHO6RXMCWmEv9dKqx2Xn/SwRcuv5lKXyTZ9IJx5mcBEtKdY4nbrH5j66dX5Husht0/M1n1v9oA07kz4ubJe9bVQlU70ZBPBq+NqYOR1RzUhuGpN2gCFTfqaK19xwm96Bo8/yw9yobjVm6iO2zmW7jTxi8MW3EJC42O5P74Z9IpmGHVcvpHHo4wsTCrpOhRmy4aBkp8IstaWlqrGCqqxwbi+hhRK3HsJnWLX7h9VpCLIfv2rfICIWS29izf9nuYfwHnxkJT2a5OjaDetjAi0sEvObNRqmPK71neSNgToLyCrWpoGVgztrT3sZbY1qJ5bG9R7Ktgi0LAduUNt6ui5ppNs2RqAGZxpq80UTrs=
+  file_glob: true
+  file: "bin/*.barrel"
+  skip_cleanup: true
+  draft: true
+  on:
+    tags: true
