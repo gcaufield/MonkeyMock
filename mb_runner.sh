@@ -123,7 +123,6 @@ DEVICES="${MB_HOME}/bin/devices.xml"
 function common_params
 {
   local -n JUNGLES=$1
-  PARAMS+="-d \"${TARGET_DEVICE}\" "
   #PARAMS+="--sdk-version \"${TARGET_SDK_VERSION}\" "
 
   PARAMS+="--apidb \"${API_DB}\" "
@@ -154,6 +153,7 @@ function params_for_test
 {
     common_params TEST_JUNGLE_FILES
     PARAMS+="--unit-test "
+    PARAMS+="-d \"${TARGET_DEVICE}\" "
     PARAMS+="-o \"${OUT_DIR}/${APP_NAME}.prg\" "
     PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
 }

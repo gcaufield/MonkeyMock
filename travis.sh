@@ -22,3 +22,9 @@ export MB_HOME="${SDK_DIR}"
 export MB_PRIVATE_KEY="${DER_FILE}"
 
 ./mb_runner.sh package
+
+# Start an XServer and simulator and wait a couple seconds for it to start up
+Xorg -config ./dummy-1920x1080.conf :1 &
+DISPLAY=:1 ./mb_runner.sh simulator
+
+./mb_runner.sh test

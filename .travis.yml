@@ -1,5 +1,8 @@
 language: java
 jdk: openjdk11
+before_install:
+- sudo apt-get -y install libpng16-16 libwebkitgtk-1.0-0 zlib1g-dev libc6-dev libstdc++6
+- DEBIAN_FRONTEND=noninteractive sudo apt-get -y install xorg xserver-xorg-video-dummy
 script:
 - "./travis.sh"
 deploy:
