@@ -68,7 +68,7 @@ fi
 # *****************
 
 JUNGLE_FILES=("${PROJECT_HOME}/monkey.jungle")
-TEST_JUNGLE_FILES=("${JUNGLE_FILES[@]}" "${PROJECT_HOME}/tests.jungle")
+TEST_JUNGLE_FILES=("${PROJECT_HOME}/test.jungle")
 MANIFEST_FILE="${PROJECT_HOME}/manifest.xml"
 CONFIG_FILE="${PROJECT_HOME}/mb_runner.cfg"
 
@@ -123,8 +123,7 @@ DEVICES="${MB_HOME}/bin/devices.xml"
 function common_params
 {
   local -n JUNGLES=$1
-  PARAMS+="--device \"${TARGET_DEVICE}\" "
-  PARAMS+="--output \"${APP_NAME}.prg\" "
+  PARAMS+="-d \"${TARGET_DEVICE}\" "
   #PARAMS+="--sdk-version \"${TARGET_SDK_VERSION}\" "
 
   PARAMS+="--apidb \"${API_DB}\" "
@@ -135,7 +134,7 @@ function common_params
 
   JUNGLES=$(printf "%s;" "${JUNGLES[@]}")
   JUNGLES=${JUNGLES::-1}
-  PARAMS+="--jungles $JUNGLES "
+  PARAMS+="-f $JUNGLES "
 }
 
 function params_for_package
@@ -143,10 +142,6 @@ function params_for_package
     common_params JUNGLE_FILES
     GIT_VER=$(git describe --long --dirty)
     PARAMS+="-o \"${OUT_DIR}/${APP_NAME}-${GIT_VER}.barrel\" "
-
-    JUNGLES=$(printf "%s;" "${JUNGLE_FILES[@]}")
-    JUNGLES=${JUNGLES::-1}
-    PARAMS+="-f $JUNGLES "
 }
 
 function params_for_build
@@ -158,12 +153,9 @@ function params_for_build
 function params_for_test
 {
     common_params TEST_JUNGLE_FILES
-    PARAMS+="-o \"${OUT_DIR}/${APP_NAME}_test.prg\" "
-    PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
-
-    PARAMS+="-f $JUNGLES "
-    PARAMS+="-d ${TARGET_DEVICE} "
     PARAMS+="--unit-test "
+    PARAMS+="-o \"${OUT_DIR}/${APP_NAME}.prg\" "
+    PARAMS+="--private-key \"${MB_PRIVATE_KEY}\" "
 }
 
 function prep_out_dir
@@ -178,15 +170,15 @@ function barrel
     "${MB_HOME}/bin/barrelbuild" ${PARAMS}
 }
 
-function tests
+function build_tests
 {
-    "${MB_HOME}/bin/barreltest" ${PARAMS}
+    "${MB_HOME}/bin/monkeyc" ${PARAMS}
 }
 
-#function tests
-#{
-#    "${MB_HOME}/bin/monkeydo" "${PROJECT_HOME}/${APP_NAME}.prg" -t
-#}
+function tests
+{
+    "${MB_HOME}/bin/monkeydo" "${OUT_DIR}/${APP_NAME}.prg" "${TARGET_DEVICE}" -t
+}
 
 function clean
 {
@@ -201,28 +193,25 @@ function simulator
     "${MB_HOME}/bin/connectiq" &
 }
 
-function push
-{
-    [ -e "${PROJECT_HOME}/${APP_NAME}.prg" ] && "${MB_HOME}/bin/monkeydo" "${PROJECT_HOME}/${APP_NAME}.prg" "${TARGET_DEVICE}" &
-}
-
 ###
 
 cd ${PROJECT_HOME}
 
 case "${1}" in
    build)
-        params_for_build
         prep_out_dir
+        params_for_build
         barrel
         ;;
    package)
-        params_for_package
         prep_out_dir
+        params_for_package
         barrel
         ;;
    test)
+        prep_out_dir
         params_for_test
+        build_tests
         tests
         ;;
    clean)

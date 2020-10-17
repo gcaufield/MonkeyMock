@@ -11,3 +11,4 @@ var testSuites = [
 function runAllTests(logger) {
   return new Tests.TestRunner().runAllTestSuites(logger, testSuites);
 }
+

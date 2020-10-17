@@ -1,3 +1,4 @@
-project.manifest = manifest.xml
-base.sourcePath = source
+project.manifest = test_manifest.xml
+base.sourcePath = source;test;dummy-app
+base.resourcePath = dummy-app/resources
 
