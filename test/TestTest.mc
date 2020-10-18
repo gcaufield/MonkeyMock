@@ -19,22 +19,22 @@ class TestTest extends Tests.Test {
 
   function canExpectEq() {
     var test = new Test();
-    test.expectEq(1, 2);
+    test.expectEq(1, 1);
 
-    expectEq(0, test.getFailures().size());
+    expectEq(0, test.getFailures().count());
   }
 
   function expectEqThrowsExceptionWhenNotEq() {
     var test = new Test();
     test.expectEq(1, 0);
 
-    expectEq(1, test.getFailures().size());
+    expectEq(1, test.getFailures().count());
   }
 
   function expectEqThrowsExceptionWhenDiffType() {
     var test = new Test();
     test.expectEq(1, "test");
 
-    expectEq(1, test.getFailures().size());
+    expectEq(1, test.getFailures().count());
   }
 }

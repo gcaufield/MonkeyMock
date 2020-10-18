@@ -7,6 +7,8 @@ module MonkeyTest {
 
 (:Mocks)
 module Mocks {
+using MonkeyTest.Tests;
+
 enum {
   MOCK_TYPE_NICE,
   MOCK_TYPE_NAGGY,
@@ -15,6 +17,7 @@ enum {
 
 //! Base class for Mock Classes
 class Mock {
+  private var _failures = new Tests.FailureList();
   private var _expectations = {};
   private var _type;
 
@@ -39,9 +42,11 @@ class Mock {
     for(var i = 0; i < keys.size(); i++) {
       var expectations = _expectations[keys[i]];
       for(var j = 0; j < expectations.size(); j++) {
-        expectations[j].verify();
+        _failures.union(expectations[j].verify());
       }
     }
+
+    return _failures;
   }
 
   protected function getFunctionName(key) {
@@ -62,7 +67,8 @@ class Mock {
           return;
         default:
         case MOCK_TYPE_STRICT:
-          throw new UnexpectedInvocationException(getFunctionName(key));
+          _failures.addFailure(
+              new UnexpectedInvocationException(getFunctionName(key)));
       }
     }
 

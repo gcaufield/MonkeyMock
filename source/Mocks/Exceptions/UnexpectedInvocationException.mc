@@ -6,7 +6,7 @@
 module MonkeyTest {
 (:Mocks)
 module Mocks {
-  using MonkeyTest.Tests;
+using MonkeyTest.Tests;
 
 //! Exception for a function invocation that was not declared
 class UnexpectedInvocationException extends Tests.TestException {

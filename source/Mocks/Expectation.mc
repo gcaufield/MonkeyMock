@@ -6,8 +6,10 @@ module MonkeyTest {
 
 (:Mocks)
 module Mocks {
+using MonkeyTest.Tests;
 //! Represents an expectation that has been set on a mock
 class Expectation {
+  private var _failures = new Tests.FailureList();
   private var _expectedArgs = null;
   private var _timesExpected = 1;
   private var _timesCalled = 0;
@@ -71,7 +73,7 @@ class Expectation {
     if(isSaturated()) {
       // TODO (caufield) create an exception for this
       // Error Expectation Over Saturated
-      throw new ExpectationException();
+      _failures.addFailure(new ExpectationException());
     }
 
     _timesCalled++;
@@ -79,8 +81,10 @@ class Expectation {
 
   function verify() {
     if((_timesExpected != null) && (_timesExpected != _timesCalled)) {
-      throw new ExpectationException();
+      _failures.addFailure(new ExpectationException());
     }
+
+    return _failures;
   }
 }
 }

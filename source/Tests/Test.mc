@@ -7,7 +7,7 @@ module MonkeyTest {
 module Tests {
 //! Base class of the Test Suite
 class Test {
-  private var _failures = [];
+  private var _failures = new FailureList();
 
   //! Child classes are expected to override this and return the suite name
   public function name() {
@@ -29,7 +29,7 @@ class Test {
   function runTest(key) {
     method(key).invoke();
 
-    if(_failures.size() == 0){
+    if(!_failures.hasFailure()){
       return null;
     }
 
@@ -42,19 +42,8 @@ class Test {
 
   function expectEq(expected, actual) {
     if( actual != expected ) {
-      captureException(
+      _failures.addFailure(
           new TestException("Expected equality. " + actual + " != " + expected));
-    }
-  }
-
-  //! Throws an exception but catches it immediately and adds it to the
-  //! failures. Ensures that we get a stack trace in the failure.
-  function captureException(ex) {
-    try {
-      throw ex;
-    }
-    catch(e) {
-      _failures.add(e);
     }
   }
 }

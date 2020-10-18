@@ -78,6 +78,7 @@ class TestRunner {
         logger.debug("[       OK ] " + testTitle);
       }
       else {
+        failures = failures.getFailures();
         logger.error(failures[0].getErrorMessage());
         failures[0].printStackTrace();
         logger.error("[  FAILED  ] " + testTitle);
