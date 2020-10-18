@@ -73,25 +73,18 @@ class TestRunner {
 
       test.setUp();
 
-      try {
-        var testMethod = new Lang.Method(test, keys[i]);
-        testMethod.invoke();
+      var failures = test.runTest(keys[i]);
+      if(failures == null) {
         logger.debug("[       OK ] " + testTitle);
       }
-      catch (ex instanceof TestException) {
-        ex.printStackTrace();
+      else {
+        logger.error(failures[0].getErrorMessage());
+        failures[0].printStackTrace();
         logger.error("[  FAILED  ] " + testTitle);
         failedTests.add(testTitle);
       }
-      catch (ex) {
-        logger.error("Unhandled Exception");
-        ex.printStackTrace();
-        logger.error("[  FAILED  ] " + testTitle);
-        failedTests.add(testTitle);
-      }
-      finally {
-        test.tearDown();
-      }
+
+      test.tearDown();
     }
 
     logger.debug("[----------] " +

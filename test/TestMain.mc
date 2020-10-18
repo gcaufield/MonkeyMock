@@ -5,6 +5,7 @@
 using MonkeyTest.Tests;
 
 var testSuites = [
+  TestTest
 ];
 
 (:test)
