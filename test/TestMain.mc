@@ -12,9 +12,7 @@ var testSuites = [
 
 (:test)
 function runAllTests(logger) {
-  if(!(new Tests.TestRunner().runAllTestSuites(logger, testSuites))) {
-    throw new Lang.Exception();
-  }
-  return true;
+  var testRunner = new Tests.TestRunner();
+  return testRunner.runAllTestSuites(logger, testSuites));
 }
 
