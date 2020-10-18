@@ -47,7 +47,13 @@ class TestRunner {
       }
     }
 
-    return failedTests.size() == 0;
+    if(failedTests.size() > 0) {
+      // Throw an exception to force the simulator to fail with a non-zero error
+      // code
+      throw new Lang.Exception();
+    }
+
+    return true;
   }
 
   //! Verifies a single test suite
@@ -65,15 +71,14 @@ class TestRunner {
                  " tests from " +
                  suiteName);
 
-    var keys = testList.keys();
     for(var i = 0; i < testList.size(); i++) {
-      var testTitle = suiteName + "." + testList[keys[i]];
+      var testTitle = suiteName + "." + testList[i].toString();
       logger.debug("[ RUN      ] " + testTitle);
       var test = new suiteDef();
 
       test.setUp();
 
-      var failures = test.runTest(keys[i]);
+      var failures = test.runTest(testList[i]);
       if(failures == null) {
         logger.debug("[       OK ] " + testTitle);
       }

@@ -41,10 +41,28 @@ class Test {
   }
 
   function expectEq(expected, actual) {
-    if( actual != expected ) {
+    if(!expected.equals(actual)) {
       _failures.addFailure(
           new TestException("Expected equality. " + actual + " != " + expected));
     }
+  }
+
+  function expectNe(expected, actual) {
+    if(expected.equals(actual)) {
+      _failures.addFailure(
+          new TestException("Expected not equal. " + actual + " == " + expected));
+    }
+  }
+
+  function expectInstanceOf(classDef, obj) {
+    if(!(obj instanceof classDef)) {
+      _failures.addFailure(
+          new TestException("Expected instanceof."));
+    }
+  }
+
+  function verifyMock(mock) {
+    _failures.combine(mock.verifyAndClear());
   }
 }
 }

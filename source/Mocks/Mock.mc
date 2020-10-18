@@ -18,6 +18,7 @@ enum {
 //! Base class for Mock Classes
 class Mock {
   private var _failures = new Tests.FailureList();
+
   private var _expectations = {};
   private var _type;
 
@@ -42,7 +43,7 @@ class Mock {
     for(var i = 0; i < keys.size(); i++) {
       var expectations = _expectations[keys[i]];
       for(var j = 0; j < expectations.size(); j++) {
-        _failures.union(expectations[j].verify());
+        _failures.combine(expectations[j].verify());
       }
     }
 

@@ -14,7 +14,7 @@ class FailureList {
     }
   }
 
-  public function union(other) {
+  public function combine(other) {
     _failures.addAll(other.getFailures());
   }
 

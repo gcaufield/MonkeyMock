@@ -2,6 +2,8 @@
 //!
 //! Copyright Greg Caufield 2020
 
+using Toybox.Lang;
+
 using MonkeyTest.Tests;
 
 var testSuites = [
@@ -11,7 +13,8 @@ var testSuites = [
 (:test)
 function runAllTests(logger) {
   if(!(new Tests.TestRunner().runAllTestSuites(logger, testSuites))) {
-    throw new Exception();
+    throw new Lang.Exception();
   }
+  return true;
 }
 
