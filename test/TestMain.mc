@@ -13,6 +13,6 @@ var testSuites = [
 (:test)
 function runAllTests(logger) {
   var testRunner = new Tests.TestRunner();
-  return testRunner.runAllTestSuites(logger, testSuites));
+  return testRunner.runAllTestSuites(logger, testSuites);
 }
 
